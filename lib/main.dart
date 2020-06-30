@@ -6,6 +6,7 @@ import 'dart:math';
 import 'constants.dart';
 import 'package:flutter_story_app_concept/story_page/first_story.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_story_app_concept/data.dart';
 
 void main() => runApp(MaterialApp(
 //      home: MyApp(),
@@ -30,11 +31,12 @@ var cardAspectRatio = 12.0 / 16.0;
 var widgetAspectRatio = cardAspectRatio * 1.2;
 
 class _MyAppState extends State<MyApp> {
-  var currentPage = images.length - 1.0;
+  var currentPage = story.images.length - 1.0;
 
   @override
   Widget build(BuildContext context) {
-    PageController controller = PageController(initialPage: images.length - 1);
+    PageController controller =
+        PageController(initialPage: story.images.length - 1);
     controller.addListener(() {
       setState(() {
         currentPage = controller.page;
@@ -127,30 +129,34 @@ class _MyAppState extends State<MyApp> {
                         ),
                       ),
                     ),
-//                    SizedBox(
-//                      width: 15.0,
-//                    ),
-//                    Text("", style: TextStyle(color: Colors.blueAccent))
                   ],
                 ),
               ),
               SizedBox(
                 height: 30.0,
               ),
-              Stack(
-                children: <Widget>[
-                  CardScrollWidget(currentPage),
-                  Positioned.fill(
-                    child: PageView.builder(
-                      itemCount: images.length,
-                      controller: controller,
-                      reverse: true,
-                      itemBuilder: (context, index) {
-                        return Container();
-                      },
-                    ),
-                  )
-                ],
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    Navigator.pushNamed(context, FirstStory.id);
+                    print('InkWell Clicked!');
+                  });
+                },
+                child: Stack(
+                  children: <Widget>[
+                    CardScrollWidget(currentPage),
+                    Positioned.fill(
+                      child: PageView.builder(
+                        itemCount: story.images.length,
+                        controller: controller,
+                        reverse: true,
+                        itemBuilder: (context, index) {
+                          return Container();
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
             ],
           ),
@@ -191,9 +197,9 @@ class _CardScrollWidgetState extends State<CardScrollWidget> {
         var primaryCardLeft = safeWidth - widthOfPrimaryCard;
         var horizontalInset = primaryCardLeft / 2;
 
-        List<Widget> cardList = new List();
+        List<Widget> cardList = List();
 
-        for (var i = 0; i < images.length; i++) {
+        for (var i = 0; i < story.images.length; i++) {
           var delta = i - widget.currentPage;
           bool isOnRight = delta > 0;
 
@@ -217,41 +223,36 @@ class _CardScrollWidgetState extends State<CardScrollWidget> {
                       offset: Offset(3.0, 6.0),
                       blurRadius: 10.0)
                 ]),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, FirstStory.id);
-                  },
-                  child: AspectRatio(
-                    aspectRatio: cardAspectRatio,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: <Widget>[
-                        Image.asset(images[i], fit: BoxFit.cover),
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0, vertical: 8.0),
-                                child: Text(
-                                  title[i],
-                                  style: TextStyle(
-                                      color: Colors.pink[700],
-                                      fontSize: 30.0,
-                                      fontFamily: "Lalezar"),
-                                ),
+                child: AspectRatio(
+                  aspectRatio: cardAspectRatio,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      Image.asset(story.images[i], fit: BoxFit.cover),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 8.0),
+                              child: Text(
+                                story.title[i],
+                                style: TextStyle(
+                                    color: Colors.pink[700],
+                                    fontSize: 30.0,
+                                    fontFamily: "Lalezar"),
                               ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),

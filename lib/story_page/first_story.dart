@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_story_app_concept/main.dart';
+import 'package:flutter_story_app_concept/data.dart';
+
+Story story = Story();
 
 class FirstStory extends StatefulWidget {
   static const String id = 'first_story';
@@ -30,7 +33,11 @@ class _FirstStoryState extends State<FirstStory> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(
-                    'القصة هنا',
+//                    'القصة هنا',
+//                    story.storyContent[i],
+//                    story.storyContent[story.storyNumber],
+//                    story.storyContent.toString(),
+                    story.getStory(),
                     style: TextStyle(
                         color: Colors.pink[700],
                         fontSize: 30.0,
